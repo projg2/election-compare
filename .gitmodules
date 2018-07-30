@@ -1,3 +1,6 @@
 [submodule "elections"]
 	path = elections
 	url = https://anongit.gentoo.org/git/proj/elections.git
+[submodule "devotee"]
+	path = devotee
+	url = https://vote.debian.org/~secretary/devotee.git/
