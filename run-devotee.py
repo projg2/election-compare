@@ -3,6 +3,8 @@
 # (c) 2018 Michał Górny
 # Released under the terms of the 2-clause BSD license
 
+from __future__ import print_function
+
 import argparse
 import json
 import os
@@ -127,6 +129,7 @@ Option_{n:1X} = {name};'''.format(n=i+1, name=cand)
                             assert m is not None
                             round_out.append(m.group('name'))
 
+            print('Next winner: {}'.format(round_out), file=sys.stderr)
             out.append(round_out)
             for o in round_out:
                 nominees_left.remove(o)
