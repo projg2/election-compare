@@ -27,7 +27,9 @@ def main():
         res = {}
         for tool in TOOLS:
             print(' {}'.format(tool), end='', flush=True)
-            s = subprocess.Popen(['./run-{}.py'.format(tool), election],
+            s = subprocess.Popen(['./run-{}.py'.format(tool),
+                                 '--repo', vals.repo,
+                                 election],
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
             stdout, stderr = s.communicate()
