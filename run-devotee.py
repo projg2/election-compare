@@ -129,6 +129,7 @@ Option_{n:1X} = {name};'''.format(n=i+1, name=cand)
                             assert m is not None
                             round_out.append(m.group('name'))
 
+            assert round_out
             print('Next winner: {}'.format(round_out), file=sys.stderr)
             out.append(round_out)
             for o in round_out:
