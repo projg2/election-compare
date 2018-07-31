@@ -127,7 +127,6 @@ Option_{n:1X} = {name};'''.format(n=i+1, name=cand)
                             assert m is not None
                             round_out.append(m.group('name'))
 
-            print(round_out)
             out.append(round_out)
             for o in round_out:
                 nominees_left.remove(o)
