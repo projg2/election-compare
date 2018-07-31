@@ -7,6 +7,8 @@ from __future__ import print_function
 
 import argparse
 import json
+import os
+import os.path
 import subprocess
 import sys
 
@@ -14,13 +16,20 @@ import sys
 TOOLS = ('countify', 'devotee')
 
 
+def get_all_elections(repo):
+    return sorted(os.listdir(os.path.join(repo, 'completed')))
+
+
 def main():
     argp = argparse.ArgumentParser()
-    argp.add_argument('election', help='Election name', nargs='+')
+    argp.add_argument('election', help='Election name', nargs='*')
     argp.add_argument('--repo',
             default='elections',
             help='Location of elections repo')
     vals = argp.parse_args()
+
+    if not vals.election:
+        vals.election = get_all_elections(vals.repo)
 
     for election in vals.election:
         print('{}:'.format(election), end='')
