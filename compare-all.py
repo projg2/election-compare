@@ -31,6 +31,7 @@ def main():
     if not vals.election:
         vals.election = get_all_elections(vals.repo)
 
+    ret = 0
     for election in vals.election:
         print('{}:'.format(election), end='')
         res = {}
@@ -57,10 +58,13 @@ def main():
                 print('MISMATCH FOUND:')
                 print('  {}: {}'.format(k1, v1))
                 print('  {}: {}'.format(k2, v2))
-                sys.exit(1)
+                ret = 1
+                break
+        else:
+            print(' OK')
 
-        print(' OK')
+    return ret
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
