@@ -11,6 +11,7 @@ import os
 import os.path
 import re
 import shutil
+import string
 import subprocess
 import sys
 import tempfile
@@ -23,6 +24,7 @@ class DevoteeWrapper(object):
     Maintains a temporary directory for devotee.
     """
 
+    BASE36_ALPHABET = string.digits + string.ascii_uppercase
     OPTION_RE = re.compile(r'\s*Option (?P<index>\w+) "(?P<name>\S+)"\s*')
 
     def __init__(self, repo, election):
@@ -58,8 +60,8 @@ End_Time = 0;'''.format(name=self.election, path=self.tempdir))
             new_ballot = ''
             for i, cand in enumerate(self.ballot):
                 new_ballot += '''
-Majority_{n:1X} = 0;
-Option_{n:1X} = {name};'''.format(n=i+1, name=cand)
+Majority_{n} = 0;
+Option_{n} = {name};'''.format(n=self.BASE36_ALPHABET[i+1], name=cand)
 
             f.write(new_ballot.rstrip(';') + '\n')
 
@@ -90,11 +92,11 @@ Option_{n:1X} = {name};'''.format(n=i+1, name=cand)
                     for o in range(len(self.ballot)):
                         votes.append('-')
                     for i, cands in enumerate(v):
-                        assert (i+1) < 16
                         for cand in cands:
                             if cand not in nominees_left:
                                 continue
-                            votes[self.ballot.index(cand)] = '{:1X}'.format(i+1)
+                            votes[self.ballot.index(cand)] = (
+                                    self.BASE36_ALPHABET[i+1])
                     f.write('V: {} {}\n'.format(''.join(votes), k))
 
             # run dvt-rslt
