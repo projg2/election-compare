@@ -23,7 +23,7 @@ class DevoteeWrapper(object):
     Maintains a temporary directory for devotee.
     """
 
-    OPTION_RE = re.compile(r'\s*Option (?P<index>\w+) "(?P<name>\w+)"\s*')
+    OPTION_RE = re.compile(r'\s*Option (?P<index>\w+) "(?P<name>\S+)"\s*')
 
     def __init__(self, repo, election):
         self.repo = repo
