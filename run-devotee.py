@@ -55,7 +55,7 @@ End_Time = 0;'''.format(name=self.election, path=self.tempdir))
             # now add the ballot
             with open(os.path.join(self.datadir, 'ballot-' + self.election),
                       'r') as ballotf:
-                self.ballot = ballotf.read().splitlines()
+                self.ballot = sorted(ballotf.read().splitlines())
 
             new_ballot = ''
             for i, cand in enumerate(self.ballot):
