@@ -79,7 +79,7 @@ Option_{n} = {name};'''.format(n=self.BASE36_ALPHABET[i+1], name=cand)
     def __exit__(self, exc_type, exc_value, exc_traceback):
         shutil.rmtree(self.tempdir)
 
-    def run(self, repo):
+    def run(self, repo, verbose=False):
         # devotee outputs only first choice, so we need to iterate it
         nominees_left = set(self.ballot)
         out = []
@@ -118,6 +118,10 @@ Option_{n} = {name};'''.format(n=self.BASE36_ALPHABET[i+1], name=cand)
 
             # results are written to file
             with open(os.path.join(self.tempdir, 'results.txt'), 'r') as f:
+                if verbose:
+                    print(f.read(), file=sys.stderr)
+                    f.seek(0)
+
                 in_list = False
                 round_out = []
                 for l in f:
@@ -155,10 +159,13 @@ def main():
     argp.add_argument('-o', '--output', type=argparse.FileType('w'),
             default=sys.stdout,
             help='Output file (outputs to stdout by default)')
+    argp.add_argument('-v', '--verbose', action='store_true',
+            help='Print verbose devotee results')
+
     vals = argp.parse_args()
 
     with DevoteeWrapper(vals.repo, vals.election) as devotee:
-        json.dump(devotee.run(vals.devotee), vals.output)
+        json.dump(devotee.run(vals.devotee, verbose=vals.verbose), vals.output)
         vals.output.write('\n')
 
 

@@ -50,7 +50,7 @@ class CountifyWrapper(object):
     def __exit__(self, exc_type, exc_value, exc_traceback):
         shutil.rmtree(self.tempdir)
 
-    def run(self):
+    def run(self, verbose=False):
         s = subprocess.Popen(['perl', os.path.join(self.tempdir, 'countify'),
                               '--rank', self.election],
                              stdout=subprocess.PIPE,
@@ -71,6 +71,8 @@ class CountifyWrapper(object):
                 in_list = True
             elif in_list:
                 out.append(l.split())
+        if verbose:
+            print(stdout.decode(), file=sys.stderr)
 
         return out
 
@@ -84,10 +86,12 @@ def main():
     argp.add_argument('-o', '--output', type=argparse.FileType('w'),
             default=sys.stdout,
             help='Output file (outputs to stdout by default)')
+    argp.add_argument('-v', '--verbose', action='store_true',
+            help='Print verbose countify output')
     vals = argp.parse_args()
 
     with CountifyWrapper(vals.repo, vals.election) as countify:
-        json.dump(countify.run(), vals.output)
+        json.dump(countify.run(verbose=vals.verbose), vals.output)
         vals.output.write('\n')
 
 
